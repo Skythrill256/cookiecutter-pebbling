@@ -8,10 +8,16 @@ from pebbling.common.models import DeploymentConfig
 
 
 def _load_config() -> dict:
-    here = os.path.dirname(__file__)
-    cfg_path = os.path.join(here, "agent_config.json")
-    with open(cfg_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    # Prefer stdlib tomllib (Py 3.11+) with fallback to tomli for Py 3.10
+    try:
+        import tomllib  # type: ignore[attr-defined]
+    except Exception:  # pragma: no cover
+        import tomli as tomllib  # type: ignore[no-redef]
+
+    project_root = os.path.dirname(os.path.dirname(__file__))
+    cfg_path = os.path.join(project_root, ".pebble", "agent_config.toml")
+    with open(cfg_path, "rb") as f:
+        return tomllib.load(f)
 
 
 simple_config = _load_config()
@@ -69,4 +75,3 @@ def simple_agent(messages: List[str]) -> str:
     {% else %}
     return messages[-1] if messages else "Hello from {{ cookiecutter.name }}!"
     {% endif %}
-

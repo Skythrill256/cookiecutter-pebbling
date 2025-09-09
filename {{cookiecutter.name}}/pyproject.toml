@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
   "pebble[slim]",
+  "tomli; python_version < '3.11'",
 {% if cookiecutter.agent_framework == "agno" %}
   "agno",
 {% elif cookiecutter.agent_framework == "crew" %}
@@ -26,4 +27,3 @@ authors = [
 dev = [
   "pebble",
 ]
-
