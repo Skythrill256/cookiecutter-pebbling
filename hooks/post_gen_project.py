@@ -1,42 +1,33 @@
-#!/usr/bin/env python
-"""
-Post-generation script for cookiecutter template.
-This script sets up deployment-specific files based on the selected platform.
-"""
-from __future__ import annotations
-
-import os
 import sys
 
-# Add the hooks directory to the Python path so we can import our modules
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(current_dir)
 
-# Import deployment modules
-# from deployment.flyio import setup_flyio_deployment
-# from deployment.render import setup_render_deployment
-# from deployment.kubernetes import setup_kubernetes_deployment
-# from deployment.docker import setup_docker_deployment
+def main() -> None:
+    project_name = "{{ cookiecutter.name }}"
+    agent = "{{ cookiecutter.agent_framework }}"
 
+    lines = [
+        "\n🎉 Project created successfully!\n",
+        "🐧 Welcome to Pebbling — powered by the Pebble CLI.",
+        "Next steps:",
+        f"  1️⃣  cd '{project_name}'",
+        "  2️⃣  Set it up using uv: 📦",
+        "      uv sync",
+        "  3️⃣  Run your agent locally: 💻",
+        f"      PYTHONPATH=src python3 -m {project_name}",
+        "      or",
+        "      python3 src/<filename.py>",
+        "  4️⃣  Deploy your agent: 🚀",
+        "      pebble launch"
+    ]
+    if agent and agent != "none":
+        lines.append(f"\n🤖 Selected agent framework: {agent}")
 
-# def setup_deployment_files():
-#     """Set up deployment-specific files based on the selected platform."""
-#     deployment_platform = "{{cookiecutter.deployment_platform}}"
-#     project_slug = "{{cookiecutter.project_slug}}"
-    
-#     # Platform-specific files
-#     if deployment_platform == "fly.io":
-#         setup_flyio_deployment(project_slug)
-#     elif deployment_platform == "render":
-#         setup_render_deployment(project_slug)
-#     elif deployment_platform == "kubernetes":
-#         setup_kubernetes_deployment(project_slug)
-#     elif deployment_platform == "docker":
-#         setup_docker_deployment(project_slug)
+    lines.append("Need help? See README.md for details. ✨")
+    print("\n".join(lines))
 
 
 if __name__ == "__main__":
-    # Set up deployment files based on the selected platform
-    # setup_deployment_files()
-    
-    print("Project generated successfully!")
+    try:
+        main()
+    except Exception as exc:
+        print(f"⚠️  Post-generation message failed: {exc}", file=sys.stderr)

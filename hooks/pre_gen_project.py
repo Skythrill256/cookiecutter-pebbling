@@ -1,22 +1,34 @@
-from __future__ import annotations
-
 import re
-import sys
+from cookiecutter.exceptions import FailedHookException
 
-PROJECT_NAME_REGEX = r"^[-a-zA-Z][-a-zA-Z0-9]+$"
-project_name = "{{cookiecutter.project_name}}"
-if not re.match(PROJECT_NAME_REGEX, project_name):
-    print(
-        f"ERROR: The project name {project_name} is not a valid Python module name. Please do not use a _ and use - instead"
-    )
-    # Exit to cancel project
-    sys.exit(1)
 
-PROJECT_SLUG_REGEX = r"^[_a-zA-Z][_a-zA-Z0-9]+$"
-project_slug = "{{cookiecutter.project_slug}}"
-if not re.match(PROJECT_SLUG_REGEX, project_slug):
-    print(
-        f"ERROR: The project slug {project_slug} is not a valid Python module name. Please do not use a - and use _ instead"
+def fail(msg: str) -> None:
+    raise FailedHookException("pre_gen_project validation failed: " + msg)
+
+
+# Collected user inputs
+NAME = "{{ cookiecutter.name }}"
+PEBBLING_EMAIL = "{{ cookiecutter.pebbling_email }}".strip()
+AGENT = "{{ cookiecutter.agent_framework }}"
+
+
+# Strict validations
+# 1) name: valid Python package identifier style: lowercase, starts with a letter, digits/underscores allowed
+NAME_RE = re.compile(r"^[a-z][a-z0-9_]{2,}$")
+if not NAME_RE.match(NAME):
+    fail(
+        "name must be a valid package name: start with a lowercase letter, "
+        "contain only lowercase letters, digits, or underscores, and be at least 3 characters (e.g., 'pebble_project')."
     )
-    # Exit to cancel project
-    sys.exit(1)
+
+# 2) Optional email: if provided, check basic email format
+if PEBBLING_EMAIL:
+    EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+    if not EMAIL_RE.match(PEBBLING_EMAIL):
+        fail("pebbling_email is not a valid email address.")
+
+# 3) Agent framework choice must be one of the allowed options
+ALLOWED_AGENTS = {"none", "agno", "crew", "langchain"}
+if AGENT not in ALLOWED_AGENTS:
+    fail(f"agent_framework must be one of: {', '.join(sorted(ALLOWED_AGENTS))}.")
+

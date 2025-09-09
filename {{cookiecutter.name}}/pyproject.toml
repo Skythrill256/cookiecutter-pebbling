@@ -1,0 +1,29 @@
+[project]
+name = "{{ cookiecutter.name }}"
+version = "0.1.0"
+description = "{{ cookiecutter.description }}"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "pebble[slim]",
+{% if cookiecutter.agent_framework == "agno" %}
+  "agno",
+{% elif cookiecutter.agent_framework == "crew" %}
+  "crewai",
+{% elif cookiecutter.agent_framework == "langchain" %}
+  "langchain",
+  "langchain-openai",
+{% endif %}
+]
+
+{% if cookiecutter.pebbling_email %}
+authors = [
+  { email = "{{ cookiecutter.pebbling_email }}" },
+]
+{% endif %}
+
+[dependency-groups]
+dev = [
+  "pebble",
+]
+
