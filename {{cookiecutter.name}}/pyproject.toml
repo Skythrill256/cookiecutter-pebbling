@@ -3,12 +3,14 @@ name = "{{ cookiecutter.name }}"
 version = "0.1.0"
 description = "{{ cookiecutter.description }}"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
+
 dependencies = [
-  "pebble[slim]",
+  "pebbling",
   "tomli; python_version < '3.11'",
 {% if cookiecutter.agent_framework == "agno" %}
   "agno",
+  "openai"
 {% elif cookiecutter.agent_framework == "crew" %}
   "crewai",
 {% elif cookiecutter.agent_framework == "langchain" %}
