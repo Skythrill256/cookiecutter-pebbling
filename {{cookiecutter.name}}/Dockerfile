@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir langchain
 
 # Copy project files
 COPY README.md ./
-COPY {{cookiecutter.name}} ./{{cookiecutter.name}}
+COPY src ./{{cookiecutter.name}}
 
 # Default to running the module; adjust as needed
 CMD ["python", "-m", "{{cookiecutter.name}}"]
