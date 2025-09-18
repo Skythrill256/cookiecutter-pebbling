@@ -1,7 +1,7 @@
 import os
 import sys
 from pathlib import Path
-from huggingface_hub import HfApi, create_repo, upload_large_folder
+from huggingface_hub import HfApi, create_repo, upload_folder
 import tomli
 
 
@@ -52,7 +52,7 @@ def main():
         )
 
         # Upload project folder (includes Dockerfile, README.md, pyproject.toml, src/, etc.)
-        upload_large_folder(
+        upload_folder(
             folder_path=str(project_dir),
             repo_id=repo_id,
             repo_type="space",
