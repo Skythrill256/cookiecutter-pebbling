@@ -1,3 +1,15 @@
+---
+title: {{ cookiecutter.name }}
+emoji: 🤖
+colorFrom: indigo
+colorTo: pink
+sdk: docker
+sdk_version: "0.0.1"
+app_port: 7860
+pinned: false
+---
+
+
 # {{ cookiecutter.name }}
 
 {{ cookiecutter.description }}
