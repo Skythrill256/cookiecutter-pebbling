@@ -58,7 +58,7 @@ def main():
             repo_type="space",
             token=hf_token,
             commit_message=f"Deploy {project_name} with Docker setup",
-            ignore_patterns=[".git", "__pycache__", "*.pyc", ".DS_Store", ".venv"],
+            ignore_patterns=[".git", "__pycache__", "*.pyc", ".DS_Store", ".venv", "pyproject.toml"],
         )
 
         url = f"https://huggingface.co/spaces/{repo_id}"
