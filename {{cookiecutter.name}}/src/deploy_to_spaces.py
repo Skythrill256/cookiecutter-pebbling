@@ -20,7 +20,7 @@ def main():
         sys.exit(1)
 
     # Get project name from pyproject.toml
-    project_dir = Path.cwd().parent
+    project_dir = Path.cwd()
     pyproject_file = project_dir / "pyproject.toml"
     if not pyproject_file.exists():
         print("pyproject.toml not found")
