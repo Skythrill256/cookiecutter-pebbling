@@ -51,9 +51,6 @@ def main():
             private=False,
         )
 
-        # Generate requirements.txt if pyproject.toml exists and requirements.txt missing
-        generate_requirements(project_dir)
-
         # Upload project folder (includes Dockerfile, README.md, pyproject.toml, src/, etc.)
         upload_folder(
             folder_path=str(project_dir),
@@ -61,7 +58,7 @@ def main():
             repo_type="space",
             token=hf_token,
             commit_message=f"Deploy {project_name} with Docker setup",
-            ignore_patterns=[".git", "__pycache__", "*.pyc", ".DS_Store"],
+            ignore_patterns=[".git", "__pycache__", "*.pyc", ".DS_Store", ".venv"],
         )
 
         url = f"https://huggingface.co/spaces/{repo_id}"
