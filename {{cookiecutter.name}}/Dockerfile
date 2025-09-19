@@ -12,12 +12,16 @@ RUN pip install --no-cache-dir uv
 COPY pyproject.toml ./
 
 # Sync dependencies into system, then uninstall uv
-RUN uv pip install --system --no-cache . \
-    && pip uninstall -y uv
+RUN uv sync --group dev
 
 # Copy project files
 COPY README.md ./
 COPY src ./{{cookiecutter.name}}
 
+COPY .pebble/ ./.pebble/
+
+ENV PYTHONPATH=/app/src
+
 # Run the app
-CMD ["python", "-m", "{{cookiecutter.name}}"]
+CMD ["uv", "run", "python", "-m", "main"]
+
